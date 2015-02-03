@@ -36,6 +36,8 @@ function heros:load()
 			return tex_color;
 		}
 	]]
+
+	print(inspect(_G))
 end
 
 function heros:update(dt)
