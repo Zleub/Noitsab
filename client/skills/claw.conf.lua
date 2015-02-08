@@ -1,20 +1,25 @@
-local whirlwind = {
-	name = 'whirlwind',
+local claw = {
+	name = "claw",
 	rate = 10,
 	delay = 0,
 	n_delay = 0,
-	delaymax = 7.85,
+	delaymax = 3,
+	rotation = 0,
 
 	update = function (self, dt, heros)
-		if love.keyboard.isDown(' ') and self.delay <= 0 then
+		if love.keyboard.isDown('q') and self.delay <= 0 then
 			self.delay = self.delaymax
 		end
 
 		if self.delay > 0 then
-			heros.rotation = heros.rotation + self.delay * dt
 			self.delay = self.delay - self.rate * dt
 		else
-			heros.rotation = 0
+
+			if heros.orientation == 'up' then self.rotation = 0 end
+			if heros.orientation == 'down' then self.rotation = 3.14 end
+			if heros.orientation == 'left' then self.rotation = 3.14 * 1.5 end
+			if heros.orientation == 'right' then self.rotation = 3.14 / 2 end
+
 		end
 
 		if self.n_delay > 0 and self.n_delay < self.delaymax then
@@ -23,12 +28,11 @@ local whirlwind = {
 			self.shader:send("max_white", 0)
 		end
 
-		self.n_delay = self.delay
-		self.n_delay = self.delaymax - self.n_delay
+		self.n_delay = self.delaymax - self.delay
 	end,
 
-	image = love.graphics.newImage("img/01.png"),
-	effect = love.graphics.newImage("img/01_effect.png"),
+	image = love.graphics.newImage("img/claw.png"),
+	effect = love.graphics.newImage("img/claw_effect.png"),
 	shader = love.graphics.newShader([[
 		extern Image eff;
 		extern number max_white;
@@ -39,8 +43,8 @@ local whirlwind = {
 			vec4 tex_color = Texel(tex, tc);
 			number white_level = (eff_color.r + eff_color.g + eff_color.b) / 3;
 
-			if (white_level <= max_white && white_level >= max_white - 0.4)
-				return eff_color * color;
+			if (white_level <= max_white && white_level >= max_white - 0.6)
+				return tex_color * color;
 
 			tex_color.a = 0;
 			return tex_color;
@@ -50,21 +54,12 @@ local whirlwind = {
 	draw = function (self, heros)
 		love.graphics.setColor(heros.color.number[heros.color.color])
 		love.graphics.setShader(self.shader)
-			love.graphics.draw(self.image,
-				heros.x, heros.y,
-				0 + self.n_delay,
-				1 * (self.n_delay / 4) + 0.1, 1 * (self.n_delay / 4) + 0.1,
-				47, 47)
-			love.graphics.draw(self.image,
-				heros.x, heros.y,
-				3.14 + self.n_delay,
-				1 * (self.n_delay / 4) + 0.1, 1 * (self.n_delay / 4) + 0.1,
-				47, 47)
+			love.graphics.draw(self.image, heros.x, heros.y, self.rotation - 0.5 + self.n_delay / 12, 3, 3, 50, 50)
 		love.graphics.setShader()
 		love.graphics.setColor(255, 255, 255)
 	end
 }
 
-whirlwind.shader:send('eff', whirlwind.effect)
+claw.shader:send('eff', claw.effect)
 
-return whirlwind
+return claw

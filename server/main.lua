@@ -4,10 +4,14 @@ socket = require 'socket'
 serving = {}
 
 function serving:start()
-	self.server = assert(socket.bind("10.11.12.16", 4242))
-	self.ip, self.port = self.server:getsockname()
-	print('Serving start on '..self.ip..':'..self.port)
-	self.server:settimeout(2)
+	if arg[2] == nil or arg[3] == nil then
+		print('Plz, specify IP or PORT')
+		love.event.quit()
+	else
+		self.udp = socket.udp()
+		self.udp:setsockname(arg[2], arg[3])
+		self.udp:settimeout(0)
+	end
 end
 
 function serving:getline(line)
@@ -20,19 +24,10 @@ end
 -- A LIST OF CLIENT AND CHECK IN BUFFER IS REQUIRED
 
 function serving:serv(dt)
-	print('serving ... '..dt)
-	local client = self.server:accept()
+	local data, msg_or_ip, port_or_nil = self.udp:receivefrom()
 
-	if client then
-		client:settimeout(10)
-		local line, err = client:receive()
-		if not err then
-			print(line)
-			-- client:send(line.."\n")
-			if self:getline(line) == -1 then
-				client:close()
-			end
-		end
+	if data then
+		print(data, msg_or_ip, port_or_nil)
 	end
 end
 
