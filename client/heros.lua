@@ -1,9 +1,16 @@
+socket = require 'socket'
+protocol = require 'UDP'
+
 local heros = {}
 
 function heros:load(color)
 	if color.color then
 		print("loading a new "..color.color.." heros")
 	end
+
+	self.udp = socket.udp()
+	self.udp:settimeout(0)
+	self.udp:setpeername(arg[2], arg[3])
 
 	self.color = color
 
@@ -19,6 +26,8 @@ function heros:load(color)
 	self.rate = 500
 	self.rotation = 0
 	self.orientation = 'up'
+
+	self.udp:send(protocol.magic)
 end
 
 function heros:update(dt)
@@ -51,12 +60,16 @@ function heros:dump()
 	love.graphics.print(inspect(self))
 end
 
-function heros:keypressed(key, unicode)
-	print('pressed: ', key, unicode)
+function heros:die()
+	self.udp:send('die')
 end
 
-function heros:keyreleased(self, key, unicode)
-	print('released: ', key, unicode)
-end
+-- function heros:keypressed(key, unicode)
+-- 	print('pressed: ', key, unicode)
+-- end
+
+-- function heros:keyreleased(self, key, unicode)
+-- 	print('released: ', key, unicode)
+-- end
 
 return heros

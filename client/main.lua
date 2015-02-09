@@ -8,6 +8,10 @@ function FPS:new(delay)
 	self.delay = delay
 	self.list = {}
 
+	for i = 1, self.width / 3, 1 do
+		self.list[i] = 0
+	end
+
 	self.update = function (self, dt)
 		self.delay = self.delay - dt
 		if self.delay < 0 then
@@ -18,6 +22,7 @@ function FPS:new(delay)
 			self.delay = delay
 		end
 	end
+
 	self.draw = function (self)
 		love.graphics.setColor(255, 255, 255, 100)
 		for k,v in pairs(self.list) do
@@ -33,10 +38,9 @@ function FPS:new(delay)
 end
 
 function love.load()
-	FPS:new(1)
-
+	FPS:new(0.1)
 	heros = require 'heros'
-	heros:load( dofile(arg[1]..'/color.lua'):load('red') )
+	heros:load( dofile(arg[1]..'/color.lua'):load('white') )
 end
 
 function love.update(dt)
@@ -48,6 +52,11 @@ function love.draw()
 	heros:dump()
 	heros:draw()
 	FPS:draw()
+end
+
+function love.quit()
+	heros:die()
+	return false
 end
 
 -- function love.keypressed(key, unicode)

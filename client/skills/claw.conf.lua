@@ -7,10 +7,6 @@ local claw = {
 	rotation = 0,
 
 	update = function (self, dt, heros)
-		if love.keyboard.isDown('q') and self.delay <= 0 then
-			self.delay = self.delaymax
-		end
-
 		if self.delay > 0 then
 			self.delay = self.delay - self.rate * dt
 		else
@@ -19,6 +15,8 @@ local claw = {
 			if heros.orientation == 'down' then self.rotation = 3.14 end
 			if heros.orientation == 'left' then self.rotation = 3.14 * 1.5 end
 			if heros.orientation == 'right' then self.rotation = 3.14 / 2 end
+
+			if love.keyboard.isDown('q') then self.delay = self.delaymax end
 
 		end
 
