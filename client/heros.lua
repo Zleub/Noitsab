@@ -9,7 +9,6 @@ function heros:load(color)
 	end
 
 	self.udp = socket.udp()
-	self.udp:settimeout(0)
 	self.udp:setpeername(arg[2], arg[3])
 
 	self.color = color
@@ -28,24 +27,52 @@ function heros:load(color)
 	self.orientation = 'up'
 
 	self.udp:send(protocol.magic)
+	self.id = self.udp:receive()
+	if self.id == nil then
+		print('no server, exiting ...')
+		self.id = -1
+		love.event.quit()
+	end
+
+	self.udp:settimeout(0)
+end
+
+function heros:move(direction)
+	print(direction)
+	local tmp
+	if direction == 'up' then
+		tmp = string.format("%d %s 0, -1", self.id, protocol.msg.position)
+	elseif direction == 'down' then
+		tmp = string.format("%d %s 0, 1", self.id, protocol.msg.position)
+	elseif direction == 'left' then
+		tmp = string.format("%d %s -1, 0", self.id, protocol.msg.position)
+	elseif direction == 'right' then
+		tmp = string.format("%d %s 1, 0", self.id, protocol.msg.position)
+	end
+	self.udp:send(tmp)
+	print(self.udp:receive())
 end
 
 function heros:update(dt)
 	if love.keyboard.isDown('up') then
-		self.y = self.y - dt * self.rate
-		self.orientation = 'up'
+		self:move('up')
+		-- self.y = self.y - dt * self.rate
+		-- self.orientation = 'up'
 	end
 	if love.keyboard.isDown('down') then
-		self.y = self.y + dt * self.rate
-		self.orientation = 'down'
+		self:move('down')
+		-- self.y = self.y + dt * self.rate
+		-- self.orientation = 'down'
 	end
 	if love.keyboard.isDown('right') then
-		self.x = self.x + dt * self.rate
-		self.orientation = 'right'
+		self:move('right')
+		-- self.x = self.x + dt * self.rate
+		-- self.orientation = 'right'
 	end
 	if love.keyboard.isDown('left') then
-		self.x = self.x - dt * self.rate
-		self.orientation = 'left'
+		self:move('left')
+		-- self.x = self.x - dt * self.rate
+		-- self.orientation = 'left'
 	end
 
 	self.color:update(dt, self)
@@ -61,7 +88,8 @@ function heros:dump()
 end
 
 function heros:die()
-	self.udp:send('die')
+	local tmp = string.format("%d %s 0", self.id, protocol.msg.quit)
+	self.udp:send(tmp)
 end
 
 -- function heros:keypressed(key, unicode)
