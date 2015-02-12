@@ -1,3 +1,3 @@
-Love2d demo
+Love2d - networking && action game
 
-ID for each client !
+2nd entry for 42 game/month

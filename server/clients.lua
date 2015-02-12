@@ -2,7 +2,7 @@ local clients = {
 	list = {}
 }
 
-function clients:get(id)
+function clients:Get(id)
 	for k, client in ipairs(self.list) do
 		if tonumber(client.id) == tonumber(id) then
 			return client
@@ -10,7 +10,7 @@ function clients:get(id)
 	end
 end
 
-function clients:is_id(id)
+function clients:isAlive(id)
 	for k,v in pairs(self.list) do
 		if v.id == id then
 			print('id: '..id..' is already in use')
@@ -20,9 +20,9 @@ function clients:is_id(id)
 	return false
 end
 
-function clients:add(ip, port)
+function clients:newClient(ip, port)
 	nbr = love.math.random(0, 42)
-	while self:is_id(nbr) do
+	while self:isAlive(nbr) do
 		nbr = love.math.random(0, 42)
 	end
 
@@ -42,7 +42,7 @@ function clients:position(id, args)
 end
 
 function clients:die(id)
-	print(id..' is die')
+	print(id..' is dead')
 	for k,client in ipairs(self.list) do
 		if tonumber(client.id) == tonumber(id) then
 			table.remove(self.list, k)

@@ -1,7 +1,6 @@
 inspect = require 'inspect'
 socket = require 'socket'
 protocol = require 'UDP'
-clients = require 'clients'
 server = require 'server'
 
 function love.load()
@@ -9,7 +8,7 @@ function love.load()
 end
 
 function love.update(dt)
-	server:serv(dt)
+	server:update(dt)
 end
 
 function love.draw()
