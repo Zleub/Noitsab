@@ -40,6 +40,9 @@ function FPS:new(delay)
 end
 
 function love.load()
+	width = love.window.getWidth()
+	height = love.window.getHeight()
+
 	FPS:new(0.1)
 	heros = require 'heros'
 	heros:load( dofile(arg[1]..'/color.lua'):load('red') )
@@ -48,9 +51,9 @@ function love.load()
 		love.graphics.setColor(0, 150, 0)
 		for k,v in ipairs(self.list) do
 			if v.shape == 'circle' then
-				love.graphics.circle('fill', v.x * Scale - heros.x_map, v.y * Scale - heros.y_map, v.radius * Scale)
+				love.graphics.circle('fill', v.x * Scale - heros.x_map + width / 2, v.y * Scale - heros.y_map + height / 2, v.radius * Scale)
 			elseif v.shape == 'rectangle' then
-				love.graphics.rectangle('fill', v.x * Scale- heros.x_map, v.y * Scale - heros.y_map, v.width * Scale, v.height * Scale)
+				love.graphics.rectangle('fill', v.x * Scale - heros.x_map + width / 2, v.y * Scale - heros.y_map + height / 2, v.width * Scale, v.height * Scale)
 			end
 		end
 		love.graphics.setColor(255, 255, 255)

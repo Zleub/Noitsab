@@ -14,9 +14,9 @@ function server:init()
 	map:createUberRectangle()
 	map:createShapes()
 
-	self.udp = socket.udp()
-	self.udp:setsockname(arg[2], arg[3])
-	self.udp:settimeout(0)
+	udp = socket.udp()
+	udp:setsockname(arg[2], arg[3])
+	udp:settimeout(0)
 end
 
 function server:start()
@@ -32,14 +32,12 @@ function server:responde(id, cmd, args)
 	if clients[cmd] then
 		local client = clients:Get(id)
 
-		if clients[cmd](clients, id, args) == true then
-			self.udp:sendto('ok', client.ip, client.port)
+		if clients[cmd] then
+			clients[cmd](clients, id, args)
 		else
-			self.udp:sendto('ko', client.ip, client.port)
+			print('I got some junk message: ')
+			print(cmd)
 		end
-	else
-		print('I got some junk message: ')
-		print(cmd)
 	end
 end
 
@@ -57,11 +55,11 @@ end
 function server:newClient(data, ip, port)
 	print(data, ip, port)
 	local client = clients:addClient(ip, port)
-	self.udp:sendto(client.id.." "..client.shape._center.x.." "..client.shape._center.y, ip, port)
+	udp:sendto(client.id.." "..client.shape._center.x.." "..client.shape._center.y, ip, port)
 end
 
 function server:update(dt)
-	local data, msg_or_ip, port_or_nil = self.udp:receivefrom()
+	local data, msg_or_ip, port_or_nil = udp:receivefrom()
 
 	if not data then return end
 

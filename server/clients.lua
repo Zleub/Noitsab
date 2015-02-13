@@ -78,7 +78,9 @@ function clients:position(id, args)
 	-- print('position callback', id, args)
 	x, y = args:match('(.*) (.*)')
 	client = self:Get(id)
-	return client:move(tonumber(x), tonumber(y))
+	if client:move(tonumber(x), tonumber(y)) == true then
+		udp:sendto('ok '..client.shape._center.x..' '..client.shape._center.y, client.ip, client.port)
+	end
 end
 
 function clients:die(id)

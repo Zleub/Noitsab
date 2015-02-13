@@ -66,9 +66,14 @@ function heros:move(direction)
 	end
 	self.udp:send(tmp)
 	local verif = self.udp:receive()
-	if verif == 'ok' then
+	if not verif then return end
+
+	local ok, x, y = verif:match("(.*) (.*) (.*)")
+	if ok == 'ok' then
 		self.draw_color = {200, 200, 200}
-		self:move_map(direction)
+		-- self:move_map(direction)
+		self.x_map = tonumber(x) * Scale
+		self.y_map = tonumber(y) * Scale
 	else
 		self.draw_color = {200, 0, 0}
 	end
