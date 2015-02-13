@@ -37,15 +37,12 @@ function clients:newClient(ip, port)
 
 		collides = function (self)
 			local neighbors = self.shape:neighbors()
-			local collision = 0
 			for k,v in pairs(neighbors) do
 				if self.shape:collidesWith(v) and v._radius ~= 1 then
-					collision = 1
+					return true
 				end
 			end
-			if collision == 1 then return true
-				else return false
-			end
+			return false
 		end,
 
 		move = function (self, x, y)
@@ -53,7 +50,7 @@ function clients:newClient(ip, port)
 			if y == nil then y = 0 end
 
 			local collides = self:collides()
-			if collides then
+			if collides == true then
 				self.shape:move(x, y)
 				if self:collides() == false then
 					self.shape:move(-x, -y)
@@ -79,7 +76,7 @@ end
 
 function clients:position(id, args)
 	-- print('position callback', id, args)
-	x, y = args:match('(.*), (.*)')
+	x, y = args:match('(.*) (.*)')
 	client = self:Get(id)
 	return client:move(tonumber(x), tonumber(y))
 end
@@ -91,7 +88,7 @@ function clients:die(id)
 			table.remove(self.list, k)
 		end
 	end
-	return 1
+	return true
 end
 
 function clients:dump()

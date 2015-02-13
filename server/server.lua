@@ -32,7 +32,7 @@ function server:responde(id, cmd, args)
 	if clients[cmd] then
 		local client = clients:Get(id)
 
-		if clients[cmd](clients, id, args) then
+		if clients[cmd](clients, id, args) == true then
 			self.udp:sendto('ok', client.ip, client.port)
 		else
 			self.udp:sendto('ko', client.ip, client.port)
@@ -57,7 +57,7 @@ end
 function server:newClient(data, ip, port)
 	print(data, ip, port)
 	local client = clients:addClient(ip, port)
-	self.udp:sendto(client.id, ip, port)
+	self.udp:sendto(client.id.." "..client.shape._center.x.." "..client.shape._center.y, ip, port)
 end
 
 function server:update(dt)

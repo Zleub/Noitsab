@@ -2,6 +2,8 @@ inspect = require 'inspect'
 
 FPS = {}
 
+Scale = 21
+
 function FPS:new(delay)
 	self.width = love.window.getWidth()
 	self.height = love.window.getHeight()
@@ -41,6 +43,18 @@ function love.load()
 	FPS:new(0.1)
 	heros = require 'heros'
 	heros:load( dofile(arg[1]..'/color.lua'):load('red') )
+	map = require 'map'
+	map.draw = function (self)
+		love.graphics.setColor(0, 150, 0)
+		for k,v in ipairs(self.list) do
+			if v.shape == 'circle' then
+				love.graphics.circle('fill', v.x * Scale - heros.x_map, v.y * Scale - heros.y_map, v.radius * Scale)
+			elseif v.shape == 'rectangle' then
+				love.graphics.rectangle('fill', v.x * Scale- heros.x_map, v.y * Scale - heros.y_map, v.width * Scale, v.height * Scale)
+			end
+		end
+		love.graphics.setColor(255, 255, 255)
+	end
 end
 
 function love.update(dt)
@@ -49,6 +63,7 @@ function love.update(dt)
 end
 
 function love.draw()
+	map:draw()
 	heros:dump()
 	heros:draw()
 	FPS:draw()

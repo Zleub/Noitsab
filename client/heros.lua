@@ -28,7 +28,9 @@ function heros:load(color)
 	self.orientation = 'up'
 
 	self.udp:send(protocol.magic)
-	self.id = self.udp:receive()
+	self.id, self.x_map, self.y_map = self.udp:receive():match("(.*) (.*) (.*)")
+	self.x_map = tonumber(self.x_map) * Scale
+	self.y_map = tonumber(self.y_map) * Scale
 	if self.id == nil then
 		print('no server, exiting ...')
 		self.id = -1
@@ -38,23 +40,37 @@ function heros:load(color)
 	self.udp:settimeout(0)
 end
 
+function heros:move_map(direction)
+	if direction == 'up' then
+		self.y_map = self.y_map - Scale
+	elseif direction == 'down' then
+		self.y_map = self.y_map + Scale
+	elseif direction == 'left' then
+		self.x_map = self.x_map - Scale
+	elseif direction == 'right' then
+		self.x_map = self.x_map + Scale
+	end
+end
+
 function heros:move(direction)
 	-- print(direction)
 	local tmp
 	if direction == 'up' then
-		tmp = string.format("%d %s 0, -1", self.id, protocol.msg.position)
+		tmp = string.format("%d %s 0 -1", self.id, protocol.msg.position)
 	elseif direction == 'down' then
-		tmp = string.format("%d %s 0, 1", self.id, protocol.msg.position)
+		tmp = string.format("%d %s 0 1", self.id, protocol.msg.position)
 	elseif direction == 'left' then
-		tmp = string.format("%d %s -1, 0", self.id, protocol.msg.position)
+		tmp = string.format("%d %s -1 0", self.id, protocol.msg.position)
 	elseif direction == 'right' then
-		tmp = string.format("%d %s 1, 0", self.id, protocol.msg.position)
+		tmp = string.format("%d %s 1 0", self.id, protocol.msg.position)
 	end
 	self.udp:send(tmp)
-	if self.udp:receive() == 'ko' then
-		self.draw_color = {200, 0, 0}
-	else
+	local verif = self.udp:receive()
+	if verif == 'ok' then
 		self.draw_color = {200, 200, 200}
+		self:move_map(direction)
+	else
+		self.draw_color = {200, 0, 0}
 	end
 end
 
