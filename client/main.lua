@@ -40,7 +40,7 @@ end
 function love.load()
 	FPS:new(0.1)
 	heros = require 'heros'
-	heros:load( dofile(arg[1]..'/color.lua'):load('white') )
+	heros:load( dofile(arg[1]..'/color.lua'):load('red') )
 end
 
 function love.update(dt)

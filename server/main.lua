@@ -12,7 +12,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.print("test")
+	server:draw()
 end
 
 -- function love.die()

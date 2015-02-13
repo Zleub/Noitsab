@@ -1,16 +1,38 @@
+Collider = require "hardoncollider"
 clients = require 'clients'
 map = require 'map'
 
 local server = {}
+
+function server:build_map()
+
+end
+
+function server:init()
+	self.HC = Collider.new(150)
+
+	map:createUberRectangle()
+
+	self.shapes = {}
+	for k,v in pairs(map.list) do
+		if v.shape == 'circle' then
+			table.insert(self.shapes, self.HC:addCircle(v.x, v.y, v.radius))
+		elseif v.shape == 'rectangle' then
+			table.insert(self.shapes, self.HC:addRectangle(v.x, v.y, v.width, v.height))
+		end
+	end
+
+	self.udp = socket.udp()
+	self.udp:setsockname(arg[2], arg[3])
+	self.udp:settimeout(0)
+end
 
 function server:start()
 	if arg[2] == nil or arg[3] == nil then
 		print('Plz, specify IP or PORT')
 		love.event.quit()
 	else
-		self.udp = socket.udp()
-		self.udp:setsockname(arg[2], arg[3])
-		self.udp:settimeout(0)
+		self:init()
 	end
 end
 
@@ -41,8 +63,9 @@ function server:match(data, ip, port)
 end
 
 function server:newClient(data, ip, port)
-	local nbr = clients:newClient(ip, port)
-	self.udp:sendto(nbr, ip, port)
+	print(data, ip, port)
+	local client = clients:addClient(ip, port)
+	self.udp:sendto(client.id, ip, port)
 end
 
 function server:update(dt)
@@ -55,6 +78,25 @@ function server:update(dt)
 	end
 
 	self:match(data, msg_or_ip, port_or_nil)
+end
+
+function server:draw()
+	for k,v in pairs(self.shapes) do
+		v:draw('line')
+	end
+	love.graphics.setColor(0, 0, 0)
+	for k,v in pairs(self.shapes) do
+		v:draw('fill')
+	end
+	love.graphics.setColor(255, 255, 255)
+
+	for k,v in pairs(clients.list) do
+		love.graphics.point(v.x, v.y)
+	end
+
+	love.graphics.print(inspect(map.UberRectangle))
+	love.graphics.rectangle('line', map.UberRectangle.min_x, map.UberRectangle.min_y,
+		map.UberRectangle.max_x - map.UberRectangle.min_x, map.UberRectangle.max_y - map.UberRectangle.min_y)
 end
 
 function server:die()

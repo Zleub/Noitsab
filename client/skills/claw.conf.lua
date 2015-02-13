@@ -32,16 +32,15 @@ local claw = {
 	image = love.graphics.newImage("img/claw.png"),
 	effect = love.graphics.newImage("img/claw_effect.png"),
 	shader = love.graphics.newShader([[
-		extern Image eff;
 		extern number max_white;
 
 		vec4 effect( vec4 color, Image tex, vec2 tc, vec2 sc )
 		{
-			vec4 eff_color = Texel(eff,tc);
+			vec4 eff_color = Texel(tex,tc);
 			vec4 tex_color = Texel(tex, tc);
 			number white_level = (eff_color.r + eff_color.g + eff_color.b) / 3;
 
-			if (white_level <= max_white && white_level >= max_white - 0.6)
+			if (white_level <= max_white && white_level >= max_white - 0.3)
 				return tex_color * color;
 
 			tex_color.a = 0;
@@ -58,6 +57,6 @@ local claw = {
 	end
 }
 
-claw.shader:send('eff', claw.effect)
+-- claw.shader:send('eff', claw.effect)
 
 return claw

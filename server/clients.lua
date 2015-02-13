@@ -21,23 +21,43 @@ function clients:isAlive(id)
 end
 
 function clients:newClient(ip, port)
+	print('adding a new client to list: ', ip, port, nbr)
+
+	new_client = {
+		id = nbr,
+		ip = ip,
+		port = port,
+
+		x = map.UberRectangle.center_x,
+		y = map.UberRectangle.center_y,
+
+		move = function (self, x, y)
+			if x == nil then x = 0 end
+			if y == nil then y = 0 end
+
+			self.x = self.x + x
+			self.y = self.y + y
+		end
+	}
+
+	table.insert(self.list, new_client)
+	return new_client
+end
+
+function clients:addClient(ip, port)
 	nbr = love.math.random(0, 42)
 	while self:isAlive(nbr) do
 		nbr = love.math.random(0, 42)
 	end
 
-	print('adding a new client to list: ', ip, port, nbr)
-	table.insert(self.list, {
-		id = nbr,
-		ip = ip,
-		port = port
-	})
-	return nbr
+	return self:newClient(ip, port)
 end
 
 function clients:position(id, args)
-	print('position callback', id, args)
-	-- client = self:get(id)
+	-- print('position callback', id, args)
+	x, y = args:match('(.*), (.*)')
+	client = self:Get(id)
+	client:move(tonumber(x), tonumber(y))
 	return 1
 end
 
