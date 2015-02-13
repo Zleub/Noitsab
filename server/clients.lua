@@ -35,11 +35,32 @@ function clients:newClient(ip, port)
 
 		shape = HC:addCircle(map.UberRectangle.center_x, map.UberRectangle.center_y, 1),
 
+		collides = function (self)
+			local neighbors = self.shape:neighbors()
+			local collision = 0
+			for k,v in pairs(neighbors) do
+				if self.shape:collidesWith(v) and v._radius ~= 1 then
+					collision = 1
+				end
+			end
+			if collision == 1 then return true
+				else return false
+			end
+		end,
+
 		move = function (self, x, y)
 			if x == nil then x = 0 end
 			if y == nil then y = 0 end
 
-			self.shape:move(x, y)
+			local collides = self:collides()
+			if collides then
+				self.shape:move(x, y)
+				if self:collides() == false then
+					self.shape:move(-x, -y)
+					collides = false
+				end
+			end
+			return collides
 		end
 	}
 
@@ -60,8 +81,7 @@ function clients:position(id, args)
 	-- print('position callback', id, args)
 	x, y = args:match('(.*), (.*)')
 	client = self:Get(id)
-	client:move(tonumber(x), tonumber(y))
-	return 1
+	return client:move(tonumber(x), tonumber(y))
 end
 
 function clients:die(id)

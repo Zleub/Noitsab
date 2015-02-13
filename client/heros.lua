@@ -12,6 +12,7 @@ function heros:load(color)
 	self.udp:setpeername(arg[2], arg[3])
 
 	self.color = color
+	self.draw_color = {200, 200, 200}
 
 	self.img = love.graphics.newImage("img/white_square.jpg")
 
@@ -50,7 +51,11 @@ function heros:move(direction)
 		tmp = string.format("%d %s 1, 0", self.id, protocol.msg.position)
 	end
 	self.udp:send(tmp)
-	-- print(self.udp:receive())
+	if self.udp:receive() == 'ko' then
+		self.draw_color = {200, 0, 0}
+	else
+		self.draw_color = {200, 200, 200}
+	end
 end
 
 function heros:update(dt)
@@ -79,7 +84,10 @@ function heros:update(dt)
 end
 
 function heros:draw()
+	love.graphics.setColor(self.draw_color)
 	love.graphics.draw(self.img, self.x, self.y, self.rotation, self.x_scale, self.y_scale, self.img:getWidth() / 2, self.img:getHeight() / 2)
+	love.graphics.setColor(255, 255, 255)
+
 	self.color:draw(self)
 end
 
