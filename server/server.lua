@@ -9,18 +9,10 @@ function server:build_map()
 end
 
 function server:init()
-	self.HC = Collider.new(150)
+	HC = Collider.new(150)
 
 	map:createUberRectangle()
-
-	self.shapes = {}
-	for k,v in pairs(map.list) do
-		if v.shape == 'circle' then
-			table.insert(self.shapes, self.HC:addCircle(v.x, v.y, v.radius))
-		elseif v.shape == 'rectangle' then
-			table.insert(self.shapes, self.HC:addRectangle(v.x, v.y, v.width, v.height))
-		end
-	end
+	map:createShapes()
 
 	self.udp = socket.udp()
 	self.udp:setsockname(arg[2], arg[3])
@@ -81,22 +73,22 @@ function server:update(dt)
 end
 
 function server:draw()
-	for k,v in pairs(self.shapes) do
+	for k,v in pairs(map.shapes) do
 		v:draw('line')
 	end
 	love.graphics.setColor(0, 0, 0)
-	for k,v in pairs(self.shapes) do
+	for k,v in pairs(map.shapes) do
 		v:draw('fill')
 	end
 	love.graphics.setColor(255, 255, 255)
 
 	for k,v in pairs(clients.list) do
-		love.graphics.point(v.x, v.y)
+		v.shape:draw()
 	end
 
-	love.graphics.print(inspect(map.UberRectangle))
-	love.graphics.rectangle('line', map.UberRectangle.min_x, map.UberRectangle.min_y,
-		map.UberRectangle.max_x - map.UberRectangle.min_x, map.UberRectangle.max_y - map.UberRectangle.min_y)
+	-- love.graphics.print(inspect(map.UberRectangle))
+	-- love.graphics.rectangle('line', map.UberRectangle.min_x, map.UberRectangle.min_y,
+	-- 	map.UberRectangle.max_x - map.UberRectangle.min_x, map.UberRectangle.max_y - map.UberRectangle.min_y)
 end
 
 function server:die()

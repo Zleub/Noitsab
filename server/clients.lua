@@ -28,15 +28,18 @@ function clients:newClient(ip, port)
 		ip = ip,
 		port = port,
 
-		x = map.UberRectangle.center_x,
-		y = map.UberRectangle.center_y,
+		-- x = map.UberRectangle.center_x,
+		-- y = map.UberRectangle.center_y,
+
+		color = {255, 255, 255},
+
+		shape = HC:addCircle(map.UberRectangle.center_x, map.UberRectangle.center_y, 1),
 
 		move = function (self, x, y)
 			if x == nil then x = 0 end
 			if y == nil then y = 0 end
 
-			self.x = self.x + x
-			self.y = self.y + y
+			self.shape:move(x, y)
 		end
 	}
 

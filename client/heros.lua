@@ -38,7 +38,7 @@ function heros:load(color)
 end
 
 function heros:move(direction)
-	print(direction)
+	-- print(direction)
 	local tmp
 	if direction == 'up' then
 		tmp = string.format("%d %s 0, -1", self.id, protocol.msg.position)
@@ -50,7 +50,7 @@ function heros:move(direction)
 		tmp = string.format("%d %s 1, 0", self.id, protocol.msg.position)
 	end
 	self.udp:send(tmp)
-	print(self.udp:receive())
+	-- print(self.udp:receive())
 end
 
 function heros:update(dt)

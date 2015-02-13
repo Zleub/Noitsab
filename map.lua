@@ -18,7 +18,14 @@ local map = {
 			radius = 30,
 			x = 700,
 			y = 500
-		}
+		},
+		{
+			shape = 'rectangle',
+			width = 350,
+			height = 500,
+			x = 400,
+			y = 500
+		},
 	},
 	createUberRectangle = function (self)
 		self.UberRectangle = {
@@ -61,6 +68,17 @@ local map = {
 		end
 		self.UberRectangle.center_x = (self.UberRectangle.max_x - self.UberRectangle.min_x) / 2 + self.UberRectangle.min_x
 		self.UberRectangle.center_y = (self.UberRectangle.max_y - self.UberRectangle.min_y) / 2 + self.UberRectangle.min_y
+	end,
+
+	createShapes = function (self)
+		self.shapes = {}
+		for k,v in pairs(self.list) do
+			if v.shape == 'circle' then
+				table.insert(self.shapes, HC:addCircle(v.x, v.y, v.radius))
+			elseif v.shape == 'rectangle' then
+				table.insert(self.shapes, HC:addRectangle(v.x, v.y, v.width, v.height))
+			end
+		end
 	end
 }
 
