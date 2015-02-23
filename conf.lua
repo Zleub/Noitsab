@@ -1,3 +1,18 @@
+--          `--::-.`
+--      ./shddddddddhs+.
+--    :yddddddddddddddddy:
+--  `sdddddddddddddddddddds`
+--  ydddh+sdddddddddy+ydddds  Pixa:conf
+-- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
+-- sdddddddddddddddddddddddds
+-- sdddddddddddddddddddddddds Created: 2015-02-23 02:44:03
+-- :ddddddddddhyyddddddddddd: Modified: 2015-02-23 04:07:39
+--  odddddddd/`:-`sdddddddds
+--   +ddddddh`+dh +dddddddo
+--    -sdddddh///sdddddds-
+--      .+ydddddddddhs/.
+--          .-::::-`
+
 function love.conf(t)
 	t.identity = nil                   -- The name of the save directory (string)
 	t.version = "0.9.1"                -- The LÖVE version this game was made for (string)
@@ -5,10 +20,10 @@ function love.conf(t)
 
 	t.window.title = "Untitled"        -- The window title (string)
 	t.window.icon = nil                -- Filepath to an image to use as the window's icon (string)
-	t.window.width = 1280               -- The window width (number)
-	t.window.height = 800              -- The window height (number)
+	t.window.width = 640               -- The window width (number)
+	t.window.height = 480              -- The window height (number)
 	t.window.borderless = false        -- Remove all border visuals from the window (boolean)
-	t.window.resizable = false         -- Let the window be user-resizable (boolean)
+	t.window.resizable = true         -- Let the window be user-resizable (boolean)
 	t.window.minwidth = 1              -- Minimum window width if the window is resizable (number)
 	t.window.minheight = 1             -- Minimum window height if the window is resizable (number)
 	t.window.fullscreen = false        -- Enable fullscreen (boolean)
