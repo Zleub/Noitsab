@@ -27,12 +27,12 @@ function world:update(dt)
 	if player.y + dt * self.g_rate < screen.height / 2 - player.tileset.height then
 		player.y = player.y + dt * self.g_rate
 		self.fall_time = self.fall_time + dt
-		player.state = 'fall'
+		player.fall = 1
 	else
 		-- self.g_rate = 30
 		-- player.jump_strengh = self.g_rate * 2
 		self.fall_time = 0
-		player.state = 'norm'
+		player.fall = 0
 	end
 	player:update(dt)
 end

@@ -26,7 +26,8 @@ function screen:init(size)
 	self.center.y = self.height / 2
 	self.mouse = {}
 	self.mouse.make = function (self) return makePoint(self.x, self.y) end
-	self:update(0)
+	self.mouse.x = love.mouse.getX()
+	self.mouse.y = love.mouse.getY()
 
 	return self
 end
@@ -49,11 +50,25 @@ end
 function screen:update(dt)
 	self.mouse.x = love.mouse.getX()
 	self.mouse.y = love.mouse.getY()
-	self:getLine(self.mouse:make())
+	-- self:getLine(self.mouse:make())
+
+	P1 = makePoint(self.center.x + player.x, self.center.y + player.y)
+	P2 = makePoint(self.mouse.x, self.mouse.y)
+	P3 = makePoint(self.center.x + player.x, 0)
+
+	P12 = math.sqrt( (P1.x - P2.x)^2 + (P1.y - P2.y)^2 )
+	P13 = math.sqrt( (P1.x - P3.x)^2 + (P1.y - P3.y)^2 )
+	P23 = math.sqrt( (P2.x - P3.x)^2 + (P2.y - P3.y)^2 )
+
+	-- print(x1 - x2, y1 - y2)
+	self.angle = math.acos( (P12^2 + P13^2 - P23^2) / (2 * P12 * P13) )
 end
 
 function screen:draw()
-	love.graphics.line(self.center.x + player.x, self.center.y + player.y, self.mouse.x, self.mouse.y)
+	-- love.graphics.print(self.angle)
+	love.graphics.arc("line", self.center.x + player.x, self.center.y + player.y, 100, 3 * (math.pi / 2), 3 * (math.pi / 2) + self.angle * player.chest)
+	-- love.graphics.line(self.center.x + player.x, self.center.y + player.y, self.center.x + player.x, 0)
+	-- love.graphics.line(self.center.x + player.x, self.center.y + player.y, self.mouse.x, self.mouse.y)
 	-- local y = 0
 	-- while y < self.height do
 	-- 	local x = 0
