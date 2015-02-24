@@ -24,7 +24,7 @@ function world:init()
 end
 
 function world:update(dt)
-	if player.y + dt * self.g_rate < screen.height / 2 - player.tileset.height then
+	if player.y + dt * self.g_rate < screen.height / 2 - 32 then
 		player.y = player.y + dt * self.g_rate
 		self.fall_time = self.fall_time + dt
 		player.fall = 1

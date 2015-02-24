@@ -39,6 +39,7 @@ function player:init()
 	self.movment_offset = 11
 
 	self.timer = 0
+	self.angle = 0
 	self:update(0)
 	return self
 end
@@ -47,7 +48,7 @@ function player:update(dt)
 	self.timer = self.timer + dt
 
 	local player_offset = screen:getLine(player:make_absolute()) + 1
-	self.vertical_offset = screen:getLine(screen.mouse:make()) - player_offset + screen.size / 2 + 1
+	self.vertical_offset = screen:getLine(screen.mouse:make()) - player_offset + screen.size / 2 + 2
 
 	if self.vertical_offset < 1 then
 		self.vertical_offset = 1
@@ -85,6 +86,8 @@ function player:update(dt)
 		self.y = self.y - dt * (self.jump_strengh + self.jump_delay)
 		self.jump_delay = self.jump_delay - dt * self.jump_strengh
 		self.movment_offset = math.abs(3 -math.floor(self.jump_delay / (self.jump_delay_max / 4))) + 21
+	elseif player.fall == 1 then
+		self.movment_offset = 3 + 21
 	else
 		if love.keyboard.isDown(' ') and player.fall == 0 then
 			self.jump_delay = self.jump_delay_max
@@ -93,15 +96,22 @@ function player:update(dt)
 end
 
 function player:draw(x, y)
-	love.graphics.draw(self.Quads[0], self.Quads[self.vertical_offset],
-		x + self.x, y + self.y,
-		0, self.chest, 1,
-		self.tileset.width / 2, 0)
-
 	love.graphics.draw(self.Quads[0], self.Quads[self.movment_offset],
 		x + self.x, y + self.y,
 		0, self.movment, 1,
-		self.tileset.width / 2, 0)
+		self.tileset.width / 2, 10)
+
+	love.graphics.draw(self.Quads[0], self.Quads[self.vertical_offset],
+		x + self.x, y + self.y,
+		0, self.chest, 1,
+		self.tileset.width / 2, 32)
+
+	-- love.graphics.draw(self.Quads[0], self.Quads[41],
+	-- 	x + self.x, y + self.y + 8,
+	-- 	self.angle, self.chest, 1,
+	-- 	32, 32)
+
+love.graphics.circle('fill', x + self.x, y + self.y + 8, 2)
 
 end
 
