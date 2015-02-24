@@ -61,14 +61,18 @@ function screen:update(dt)
 	P23 = math.sqrt( (P2.x - P3.x)^2 + (P2.y - P3.y)^2 )
 
 	-- print(x1 - x2, y1 - y2)
-	player.angle = math.acos( (P12^2 + P13^2 - P23^2) / (2 * P12 * P13) ) - math.pi / 2
+	player.angle = (math.acos( (P12^2 + P13^2 - P23^2) / (2 * P12 * P13) ) - (math.pi / 2))* player.chest
+	if player.angle > 1.5 then player.angle = 1.5 end
+	if player.angle < -1.5 then player.angle = -1.5 end
 end
 
 function screen:draw()
-	-- love.graphics.print(self.angle)
-	-- love.graphics.arc("line", self.center.x + player.x, self.center.y + player.y, 100, 3 * (math.pi / 2), 3 * (math.pi / 2) + self.angle * player.chest)
-	-- love.graphics.line(self.center.x + player.x, self.center.y + player.y, self.center.x + player.x, 0)
-	-- love.graphics.line(self.center.x + player.x, self.center.y + player.y, self.mouse.x, self.mouse.y)
+	-- print(player.angle)
+	-- love.graphics.line(P1.x, P1.y, P2.x, P2.y)
+	-- love.graphics.line(P1.x, P1.y, P3.x, P3.y)
+	-- love.graphics.line(P2.x, P2.y, P3.x, P3.y)
+	-- love.graphics.print(player.angle)
+
 	-- local y = 0
 	-- while y < self.height do
 	-- 	local x = 0

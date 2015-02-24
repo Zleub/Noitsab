@@ -106,12 +106,12 @@ function player:draw(x, y)
 		0, self.chest, 1,
 		self.tileset.width / 2, 32)
 
-	-- love.graphics.draw(self.Quads[0], self.Quads[41],
-	-- 	x + self.x, y + self.y + 8,
-	-- 	self.angle, self.chest, 1,
-	-- 	32, 32)
+	love.graphics.draw(self.Quads[0], self.Quads[41],
+		x + self.x, y + self.y + 8,
+		self.angle, self.chest, 1,
+		32, 32)
 
-love.graphics.circle('fill', x + self.x, y + self.y + 8, 2)
+-- love.graphics.circle('fill', x + self.x, y + self.y + 8, 2)
 
 end
 
