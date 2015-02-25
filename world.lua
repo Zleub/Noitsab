@@ -6,7 +6,7 @@
 -- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-02-23 14:21:35
--- :ddddddddddhyyddddddddddd: Modified: 2015-02-24 13:50:38
+-- :ddddddddddhyyddddddddddd: Modified: 2015-02-25 03:06:00
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -18,6 +18,7 @@ player = require 'player'
 local world = {}
 
 function world:init()
+	self.list = dofile('map.lua')
 	self.g_rate = 300
 	self.fall_time = 0
 	return self
@@ -38,6 +39,7 @@ function world:update(dt)
 end
 
 function world:draw()
+	love.graphics.print(inspect(self.list))
 	player:draw(screen.center.x, screen.center.y)
 end
 
