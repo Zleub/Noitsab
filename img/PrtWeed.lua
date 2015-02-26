@@ -2,11 +2,11 @@
 --      ./shddddddddhs+.
 --    :yddddddddddddddddy:
 --  `sdddddddddddddddddddds`
---  ydddh+sdddddddddy+ydddds  Pixa:map
+--  ydddh+sdddddddddy+ydddds  Pixa:PrtWeed
 -- /ddddy:oddddddddds:sddddd/ By adebray - adebray
 -- sdddddddddddddddddddddddds
--- sdddddddddddddddddddddddds Created: 2015-02-25 03:02:04
--- :ddddddddddhyyddddddddddd: Modified: 2015-02-26 00:32:44
+-- sdddddddddddddddddddddddds Created: 2015-02-26 00:33:28
+-- :ddddddddddhyyddddddddddd: Modified: 2015-02-26 00:35:15
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -14,15 +14,12 @@
 --          .-::::-`
 
 return {
-	{ 49 },
-	{ 49 , 1, 49},
-	{ 49 , 1, 49},
-	{ 49 , 1, 49},
-	{ 49 , 1, 49},
-	{ 49 , 1, 49},
-	{ 49 },
-	{ 49 },
-	{ 49 },
-	{ 49 },
-	{ 49 }
+	[1] = {
+		collision = false,
+		offset = 0
+	},
+	[49] = {
+		collision = true,
+		offset = 0
+	}
 }
