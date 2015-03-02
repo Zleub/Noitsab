@@ -6,7 +6,7 @@
 -- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-02-23 14:21:35
--- :ddddddddddhyyddddddddddd: Modified: 2015-02-27 20:25:17
+-- :ddddddddddhyyddddddddddd: Modified: 2015-03-02 15:17:39
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -29,7 +29,7 @@ function world:init()
 	print(inspect(self.PrtWeed))
 
 	self.list = dofile('map.lua')
-	self.g_rate = 300
+	self.g_rate = 500
 	self.fall_time = 0
 	-- print(inspect(self))
 	return self

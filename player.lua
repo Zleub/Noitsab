@@ -6,7 +6,7 @@
 -- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-02-23 14:06:32
--- :ddddddddddhyyddddddddddd: Modified: 2015-02-27 19:55:01
+-- :ddddddddddhyyddddddddddd: Modified: 2015-03-02 15:19:25
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -31,8 +31,8 @@ function player:init()
 	self.y = 0
 
 	self.jump_delay = 0
-	self.jump_delay_max = 240
-	self.jump_strengh = world.g_rate * 1.2
+	self.jump_delay_max = 300
+	self.jump_strengh = world.g_rate * 1.5
 	self.movment = 1
 	self.movment_rate = 200
 	self.movment_timer = 0
@@ -42,6 +42,10 @@ function player:init()
 	self.angle = 0
 	self:update(0)
 	return self
+end
+
+function player:move(dt)
+
 end
 
 function player:update(dt)
