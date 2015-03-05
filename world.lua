@@ -6,7 +6,7 @@
 -- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-02-23 14:21:35
--- :ddddddddddhyyddddddddddd: Modified: 2015-03-02 15:17:39
+-- :ddddddddddhyyddddddddddd: Modified: 2015-03-03 21:45:48
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -78,8 +78,9 @@ function world:getTile()
 end
 
 function world:gravitate(dt)
+	test = player.y  -- + screen.height / 2
 	print(inspect(self.actual))
-	if player.y + dt * self.g_rate < screen.height / 2 - 32
+	if player.y < screen.height / 2
 		and (not self.actual or self.actual.collision == false) then
 		player.y = player.y + dt * self.g_rate
 		self.fall_time = self.fall_time + dt
@@ -99,6 +100,7 @@ function world:update(dt)
 end
 
 function world:draw()
+	love.graphics.line(screen.center.x + player.x - 20, screen.center.y + test, screen.center.x + player.x + 20, screen.center.y + test)
 	local width = screen.width
 	local height = screen.height
 	for key, column in ipairs(self.list) do

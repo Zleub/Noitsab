@@ -6,7 +6,7 @@
 -- /ddddy:oddddddddds:sddddd/ By Arnaud Debray - Arnaud Debray
 -- sdddddddddddddddddddddddds
 -- sdddddddddddddddddddddddds Created: 2015-02-23 14:06:32
--- :ddddddddddhyyddddddddddd: Modified: 2015-03-02 15:19:25
+-- :ddddddddddhyyddddddddddd: Modified: 2015-03-03 21:24:45
 --  odddddddd/`:-`sdddddddds
 --   +ddddddh`+dh +dddddddo
 --    -sdddddh///sdddddds-
@@ -45,23 +45,6 @@ function player:init()
 end
 
 function player:move(dt)
-
-end
-
-function player:update(dt)
-	self.timer = self.timer + dt
-
-	local player_offset = screen:getLine(player:make_absolute()) + 1
-	self.vertical_offset = screen:getLine(screen.mouse:make()) - player_offset + screen.size / 2 + 2
-
-	if self.vertical_offset < 1 then
-		self.vertical_offset = 1
-	elseif self.vertical_offset > 8 then
-		self.vertical_offset = 8
-	end
-
-	if self.x + screen.width / 2 < screen.mouse.x then self.chest = 1 else self.chest = -1 end
-
 	if love.keyboard.isDown('q') then
 		self.x = self.x - dt * self.movment_rate
 		self.movment = -1
@@ -85,6 +68,23 @@ function player:update(dt)
 		self.movment_offset = math.floor(self.timer) % 2 + 11
 		self.movment_timer = 0
 	end
+end
+
+function player:update(dt)
+	self.timer = self.timer + dt
+
+	local player_offset = screen:getLine(player:make_absolute()) + 1
+	self.vertical_offset = screen:getLine(screen.mouse:make()) - player_offset + screen.size / 2 + 2
+
+	if self.vertical_offset < 1 then
+		self.vertical_offset = 1
+	elseif self.vertical_offset > 8 then
+		self.vertical_offset = 8
+	end
+
+	if self.x + screen.width / 2 < screen.mouse.x then self.chest = 1 else self.chest = -1 end
+
+	self:move(dt)
 
 	if self.jump_delay > 0 then
 		self.y = self.y - dt * (self.jump_strengh + self.jump_delay)
